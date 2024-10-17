@@ -1,1 +1,1 @@
-my crypto project  i build it with react and python
+my crypto project  i build it with react and python  fullstact project
