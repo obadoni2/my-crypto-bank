@@ -1,37 +1,38 @@
 import LandingPage from "./Components/LandingPage";
 import RegistrationForm from "./Components/RegistrationForm";
 import MainPage from "./Components/MainPage";
+import CryptoGraphs from "./Components/CryptoGraphs";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import ModalWindow from  "./Components/ModalWindow";
-import ErroModal from "./Components/ErroMoal";
+import ErrorModal from "./Components/ErrorModal";
 import Verification from "./Components/Verification";
 import TransferValidationModal from "./Components/TransferValidationModal";
 import {useState} from "react";
-import Unauthorized from  "./Componenents/Unauthorized";
+import Unauthorized from  "./Components/Unauthorized";
 import RequireAuth from "./RequireAuth";
 
 
 function App() {
     const [showModal, setShowModal] = useState(false);
-    const [showErrorModal, SetErrorModal] = useState(false);
+    const [showErrorModal, setErrorModal] = useState(false);
     const [errorModalData, setErrorModalData] = useState("");
     const[modalTransaction, setModalTransaction] = useState(null);
 
- const turnoff = () => {
+ const turnOff = () => {
     setShowModal(false);
  };
 
- const turnonModal =(transaction) => {
+ const turnOnModal =(transaction) => {
     setShowModal(true);
     setModalTransaction(transaction);
     
  };
-  const turnonErroModal =(data) => {
-    setErrorModalData(false);
+  const turnOffErrorModal = () => {
+    setErrorModal(false);
   }
 
-  const turnOnErromal =(data) => {
-    setErrorModalData(true);
+  const turnOnErroModal =(data) => {
+    setErrorModal(true);
     setErrorModalData(data);
   };
 
@@ -40,11 +41,11 @@ function App() {
     <Router>
         <div>
             {showModal ?(
-                <ModallWindow turnOff={turnoff} modalTransaction={modalTransaction} />
+                <ModalWindow turnOff={turnOff} modalTransaction={modalTransaction} />
 
             ): null}
 
-            {showErrorModal ?(
+            {showErrorModal ? (
                 <ErrorModal 
                 turnOffErrorModal={turnOffErrorModal}
                 errorModalData={errorModalData}
@@ -52,15 +53,15 @@ function App() {
             ): null}
 
             <Routes> 
-                <route path="/register" element={<RegistrationForm />} />
-                <Routr path="/" element={<LandingPage />} />
+                <Route path="/register" element={<RegistrationForm />} />
+                <Route path="/" element={<LandingPage />} />
                 <Route path="/verification" element={<Verification />} />
 
                 <Route element={<RequireAuth />}> 
                 <Route 
                 path="/mainPage"
                 element={
-                    <MainPaga
+                    <MainPage
                     turnOnModal ={turnOnModal}
                     turnOnErroModal={turnOnErroModal}
                     />
@@ -71,12 +72,12 @@ function App() {
                 <Route 
                  path="/verificationTransaction"
                  element={
-                    <TreansFerValidationModal turnOnErroModal={turnOnErroModal} />
+                  < TransferValidationModal turnOnErroModal={turnOnErroModal} />
 
                  }
                  />
                  <Route path="/graphs" element={<CryptoGraphs/>} />
-                 <Route path="/unauthorizaed" element={<Unaauthorized/>}/>
+                 <Route path="/unauthorized" element={<Unauthorized/>}/>
                 </Route>
             </Routes>
         </div>
