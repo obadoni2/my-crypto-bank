@@ -1,42 +1,40 @@
-import string 
-import random 
-from config import db, mail 
-from flask_mail import Message 
-import requests 
-
-import yagmail 
+import string
+import random
+from config import db, mail
+from flask_mail import Message
+import requests
+import yagmail
 from yagmail.error import YagConnectionClosed
 
-def send_mail(user): 
+
+def send_mail(user):
     letters = string.ascii_letters
-    user.otp = ''.join(random.choice(letters)for i in range(5))
+    user.otp = ''.join(random.choice(letters) for i in range(5))
     db.session.commit()
-    
-    try: 
-        
-        email = 'obadoniemma@gmail.com'
-        password = 'Emma11111.'
-        
+    try:
+
+        email = 'mailzaaplikaciju21@gmail.com'
+        password = 'jabxcsxssvjkjuiu'
+
         yag = yagmail.SMTP(email, password)
-        
-        to_email = user.email 
+
+        to_email = user.email
         subject = 'Verification Code'
-        message = "Email Verification code =" + user.otp 
-        
+        message = "Email Verification code = " + user.otp
+
         yag.send(
             to=to_email,
-            subject = subject,
-            contents = message
+            subject=subject,
+            contents=message
         )
-        
-        print('Email uspesno poslat')
-        
+
+        print('Email uspešno poslat')
+
     except YagConnectionClosed as e:
-        print(f'Greska prilikom slanja emaila:{str(e)}')
-        
-        
-        
-# import requests
+        print(f'Greška prilikom slanja emaila: {str(e)}')
+
+
+    # import requests
     #
     # url = "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send"
     #
@@ -68,14 +66,16 @@ def send_mail(user):
     # else:
     #     return False
 
-def updata_crypto_currency(name,amount, crypto_currencies): 
+def update_crypto_currency(name, amount, crypto_currencies):
     crypto_currency = next(
         filter(lambda x: x.name == name, crypto_currencies), None)
     crypto_currency.amount += amount
     if crypto_currency.amount < 0:
-        return {"error": "you don't have  enough cryptocurrency"}, 404
+        return {"error": "You don't have enough cryptocurrency"}, 400
     db.session.commit()
-    return {"message": "cryptocurrency updated successfully"}, 200
- 
+    return
 
-    
+
+
+
+

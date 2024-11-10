@@ -1,7 +1,8 @@
 from sqlalchemy.orm import backref
-from config import db, ma 
+from config import db, ma
 from marshmallow import Schema, fields
 from .crypto_currency import CryptoCurrencySchema
+
 
 class CryptoAccount(db.Model):
     # __tablename__ = "crypto_account"
@@ -9,9 +10,10 @@ class CryptoAccount(db.Model):
     amount = db.Column(db.Integer)
     crypto_currencies = db.relationship(
         "CryptoCurrency", backref="account"
-    ) # one to many
+    )  # one to many
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    
+
+
 class CryptoAccountSchema(ma.Schema):
     id = fields.Number()
     amount = fields.Number()

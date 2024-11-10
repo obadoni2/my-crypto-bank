@@ -1,9 +1,9 @@
 import axios from "axios";
 
 export default axios.create({
-    withCredentials:true,
-    // header:{
-     // Authorization "bearer" + localStorage.getItem("token")
-     
-   // }
+  withCredentials: true,
+  // headers: {
+  //   Authorization: "Bearer " + localStorage.getItem("token"),
+  //   "Access-Control-Allow-Origin": "*",
+  // },
 });

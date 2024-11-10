@@ -1,84 +1,98 @@
-import React, {userEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import httpClient from "../httpClient";
-import{useNavigate} from "./CryptoAllList";
+import { useNavigate } from "react-router-dom";
 import CryptoAllList from "./CryptoAllList";
-import BankingImport from "./BankImport";
+import BankImport from "./BankImport";
 import CurrencyExchange from "./CurrencyExchange";
 import Transfer from "./Transfer";
 import UserCryptoList from "./UserCryptoList";
 import TransactionList from "./TransactionList";
-import TransactionRequestList from "./TransactionRequestLists";
-import CryptoGraphphs from "./CrytoGraphs"
+import TransactionRequestLits from "./TransactionRequestLits";
+import CryptoGraphs from "./CryptoGraphs";
 import BlockUserList from "./BlockUserList";
 
-const MainPage =({turnOnMOdal, turnonErromodal}) => {
-    const navigate = useNavigate();
+const MainPage = ({ turnOnModal, turnOnErroModal }) => {
+  const navigate = useNavigate();
 
-    const [toShow, setToShow] = useState("all");
-    const [currencySymbols, setCurrencySymbols] = useState([]);
-    const [currencySymbolsUsd, setCurrencySymbolsUsd] = useState([]);
-    
+  const [toShow, setToShow] = useState("all");
+  const [currencySymbols, setCurrencySymbols] = useState([]);
+  const [currencySymbolsUsd, setCurrencySymbolsUsd] = useState([]);
 
-    const[currencyAll, setCurrencyAll] = useState([]);
-    const [userCryptoList, setUserCrypoList] = useState ([]);
-    const[userTransactions, setUserTransactions] = useState([]);
-    const[userEmail, setUserEmail] = useState("");
-    const[userTransactionRequests, setuserTransactionRequest] = useState([]);
+  const [currencyAll, setCurrencyAll] = useState([]);
+  const [userCryptoList, setUserCryptoList] = useState([]);
+  const [userTransactions, setUserTransactions] = useState([]);
+  const [userEmail, setUserEmail] = useState("");
+  const [userTransactionReqeusts, setuserTransactionReqeusts] = useState([]);
 
+  //dependencies
+  const [amountToBuy, setAmountToBuy] = useState(0); //za exchange
+  const [transferAmount, setTransferAmount] = useState(0);
+  const [userMoney, setUserMoney] = useState(0);
 
-    //dependencies
-    const [amountToBuy, setAmountToBuy] = useState(0); //za exchange
-    const [transferAmount, setTransferAmount] = useState(0);
-    const[userMoney, setUserMOney] = useState(0);
+  const today = new Date();
+  const date =
+    today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
 
+  const logOut = async () => {
+    //await httpClient.post("http://127.0.0.1:5000/logout");
+    localStorage.clear();
+    navigate("/");
+  };
 
-    const today = new Date();
-    const date = 
-      today.getDate() + "/" + (today.getMonth() +1) + "/" + today.getFullYear();
+  const updateTransactions = (newTransaction) => {
+    setUserTransactions([...userTransactions, newTransaction]);
+  };
 
-    const logOut = async () => {
-        // await httpClient. post(http://127.0.0.1:500/logout");
+  useEffect(() => {
+    const getUserMoney = async () => {
+      const resp = await httpClient("http://127.0.0.1:5000/account/getMoney", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
 
-        localStorage.clear();
-        navigate ("/");
+      setUserMoney(resp.data.value);
     };
 
-    userEffect(() => {
-        const getUserMoney = async () => {
-            const resp = await httpClient("http://127.0.0.1:500/account/getMoney", {
-            headers: {
-                Authorization: "Bearer" + localStorage.getItem("token"),
-                "Access-Control-Allow-origin": "*",
+    getUserMoney();
+  }, [userMoney, amountToBuy]);
 
-            },
-            });
-
-            setUserMOney(resp.data.value);
-        };
-         
-        setUserMOney();
-    }, [userMoney, amountToBuy]);
-    
- userEffect(() => {
+  useEffect(() => {
     const getUserCrypto = async () => {
       const resp = await httpClient.get(
-        "http://127.0.0.1:500/acount/getCrypto",
+        "http://127.0.0.1:5000/account/getCrypto",
         {
-            header:{
-                Authorization:"Bearer" + localStorage.getItem("token"),
-                "Access-Control-Allow-origin": "*",
-            },
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+      setUserCryptoList(resp.data);
+    };
 
+    getUserCrypto();
+  }, [amountToBuy]);
+
+  useEffect(() => {
+    const getUserTransactions = async () => {
+      const resp = await httpClient.get(
+        "http://127.0.0.1:5000/transaction/getTransactions",
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Access-Control-Allow-Origin": "*",
+          },
         }
       );
       setUserTransactions(resp.data);
-
     };
 
     getUserTransactions();
- }, [transferAmount]);
+  }, [transferAmount]);
 
-// useEffect(() => {
+  // useEffect(() => {
   //   const getTransactionRequests = async () => {
   //     const resp = await httpClient.get(
   //       "http://127.0.0.1:5000/transaction/getTransactionRequests"
@@ -89,9 +103,6 @@ const MainPage =({turnOnMOdal, turnonErromodal}) => {
 
   //   getTransactionRequests();
   // }, []);
-   
-
-
 
   useEffect(() => {
     const getUserEmail = async () => {
@@ -112,19 +123,19 @@ const MainPage =({turnOnMOdal, turnonErromodal}) => {
       const resp = await httpClient.get(
         "http://127.0.0.1:5000/crypto/showCryptoSymbols",
         {
-          header:{
-            Authorization: "Bearer" + localStorage.getItem("token"),
-            "Access-Control-allow-origin": "*"
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Access-Control-Allow-Origin": "*",
           },
-
         }
       );
-      const data =["USD", ...resp.data];
+
+      const data = ["USD", ...resp.data];
       setCurrencySymbols(resp.data);
       setCurrencySymbolsUsd(data);
     };
-    getSymbol();
 
+    getSymbol();
   }, []);
 
   useEffect(() => {
@@ -132,75 +143,88 @@ const MainPage =({turnOnMOdal, turnonErromodal}) => {
       const resp = await httpClient.get(
         "http://127.0.0.1:5000/crypto/showCrypto_all",
         {
-          header:{
-            Authorization: "Bearer" + localStorage.getItem("token"),
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
             "Access-Control-Allow-Origin": "*",
-
           },
-
         }
-        
       );
       setCurrencyAll(resp.data);
     };
+
     getCurrencyAll();
   }, []);
 
   const showUserCrypto = async () => {
     setToShow("userCrypto");
     const resp = await httpClient.get(
-      "http://127.0.0.1:5000/acount/getCrypto",
+      "http://127.0.0.1:5000/account/getCrypto",
       {
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("token"),
+          Authorization: "Bearer " + localStorage.getItem("token"),
           "Access-Control-Allow-Origin": "*",
         },
-
       }
     );
     setUserCryptoList(resp.data);
   };
 
+  const showCurrencyAll = () => {
+    setToShow("all");
+  };
+
   const showBlockUserList = () => {
     setToShow("blockUserList");
   };
+
   const showTransactions = async () => {
     setToShow("transactions");
-    const resp =await httpClient.get(
+    const resp = await httpClient.get(
       "http://127.0.0.1:5000/transaction/getTransactions",
       {
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("token"),
-          "Access-Control-Allow-origin": "*",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Access-Control-Allow-Origin": "*",
         },
       }
     );
-    setuserTransactRequests(resp.data);
-      setToShow("graphs");
-  
+    setUserTransactions(resp.data);
   };
-  
-  const ShowCryptoGrapha = () => {
+
+  const showTransactionRequests = async () => {
+    const resp = await httpClient.get(
+      "http://127.0.0.1:5000/transaction/getTransactionRequests",
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+    setuserTransactionReqeusts(resp.data);
+    setToShow("requests");
+  };
+
+  const showCryptoGraphs = () => {
     setToShow("graphs");
   };
 
   const onRequestResolve = (clickedReq) => {
     console.log(clickedReq);
-    const newReq = userTransactionRequesusts.filter((req) => {
-      return req.hasID !== clickedReq.hashID;
+    const newReq = userTransactionReqeusts.filter((req) => {
+      return req.hashID !== clickedReq.hashID;
     });
 
-    setuserTransactuinRequests(newReq);
+    setuserTransactionReqeusts(newReq);
   };
 
   const onAccept = async () => {
-    const resp =await httpClient.get(
-      "http://127.0.01:5000/transaction/getTransactuins",
+    const resp = await httpClient.get(
+      "http://127.0.0.1:5000/transaction/getTransactions",
       {
         headers: {
-          authorization: "Bearer " + localStorage.getItem("token"),
-          "Access-ConTrol-Allow-Orign": "*",
-
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Access-Control-Allow-Origin": "*",
         },
       }
     );
@@ -210,42 +234,45 @@ const MainPage =({turnOnMOdal, turnonErromodal}) => {
   return (
     <main className="app">
       <div className="balance">
-        
-      <div>
-      <p className="balance__label">Current balance</p>
-      <p className="balance__data">
-        AS of <span className="data">{data}</span>
-
-      </p>
+        <div>
+          <p className="balance__label">Current balance</p>
+          <p className="balance__date">
+            As of <span className="date">{date}</span>
+          </p>
+        </div>
+        <p className="balance__value">{Math.round(userMoney)}$</p>
+        <button className="btn" onClick={logOut}>
+          logout
+        </button>
       </div>
-
-      <p class Name="balance__value">{Math.round(userMoney)}$</p>
-      <button className="btn" onClick={logOut}>
-        logout
-      </button>
-      </div>
-
       <div className="movements">
-        {toShow == "all" ? <CryptoAllList cryptoListList={currencyAll} /> : null}
-        {toShow == "userCrypto" ? (
-          <UserCryptoList 
-            userCryptoList ={userCrytoList}
+        {toShow === "all" ? <CryptoAllList cryptoList={currencyAll} /> : null}
+        {toShow === "userCrypto" ? (
+          <UserCryptoList
+            userCryptoList={userCryptoList}
             currencyAll={currencyAll}
-            />
+          />
         ) : null}
-        {toShow == "tranaction " ?(
-          <TransactiontionList 
-            userTransactions = {userTransactions}
-            userEmail = {userEmail}
-            turnonModal={turnOnModal}
-            />
-
-        ): null}
-        {toShow == "graphs" ? <CryptoGraphs/>: null}
-        {toShow == "blockUserLIst" ? <BlockUserList/>:null}
-
+        {toShow === "transactions" ? (
+          <TransactionList
+            userTransactions={userTransactions}
+            userEmail={userEmail}
+            turnOnModal={turnOnModal}
+          />
+        ) : null}
+        {toShow === "requests" ? (
+          <TransactionRequestLits
+            userTransactionReqeusts={userTransactionReqeusts}
+            turnOnModal={turnOnModal}
+            onRequestResolve={onRequestResolve}
+            updateTransactions={updateTransactions}
+            showTransactions={onAccept}
+          />
+        ) : null}
+        {toShow === "graphs" ? <CryptoGraphs /> : null}
+        {toShow === "blockUserList" ? <BlockUserList /> : null}
       </div>
-      <div className = "summary">
+      <div className="summary">
         <button className="btn btn--show" onClick={showCurrencyAll}>
           All currency
         </button>
@@ -255,38 +282,36 @@ const MainPage =({turnOnMOdal, turnonErromodal}) => {
         <button className="btn btn--show" onClick={showUserCrypto}>
           My crypto
         </button>
-        <button className ="btn btn--show" onClick={showTransactionRequest}>
+        <button className="btn btn--show" onClick={showTransactionRequests}>
           My transaction requests
         </button>
-        {localStorage.getItem("role") == "PUSER" ?(
-         <button className="btn btn--show" onClick={showCryptoGraphs}>
-          Cryto charts
-         </button>
-        ): null}
+        {localStorage.getItem("role") === "PUSER" ? (
+          <button className="btn btn--show" onClick={showCryptoGraphs}>
+            Crypto charts
+          </button>
+        ) : null}
         {localStorage.getItem("role") === "ADMIN" ? (
           <button className="btn btn--show" onClick={showBlockUserList}>
             Blockable users
           </button>
         ) : null}
       </div>
-       <Transfer 
-       currencySymbols = {currencySymbols}
-       transferAmount = {transferAmount}
-       setTransferAmount ={setTransferAmount}
-       turnonErroModal = {turnOnErroModal}
-       />
 
-       <BanKImport userMoney = {userMoney} setUserMoney={setUserMoney} />
-       <CurrencyExchange
+      <Transfer
+        currencySymbols={currencySymbols}
+        transferAmount={transferAmount}
+        setTransferAmount={setTransferAmount}
+        turnOnErroModal={turnOnErroModal}
+      />
+      <BankImport userMoney={userMoney} setUserMoney={setUserMoney} />
+      <CurrencyExchange
         currencySymbolsUsd={currencySymbolsUsd}
-        amountToBuy ={amountToBy}
-        setAmountToBuy ={setAmountTOBuy}
-        turnonErrModal = {turnOnErroModal}
-        />
-
+        amountToBuy={amountToBuy}
+        setAmountToBuy={setAmountToBuy}
+        turnOnErroModal={turnOnErroModal}
+      />
     </main>
   );
-
 };
 
 export default MainPage;

@@ -47,3 +47,4 @@ def get_money():
 
     return jsonify({"value": crypto_account.amount}), 200
 
+

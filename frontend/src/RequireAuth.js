@@ -1,15 +1,13 @@
-import {useLocation, Navigate, Outlet} from "react-router-dom"
+import { useLocation, Navigate, Outlet } from "react-router-dom";
 
-const RequireAuth = ({allowedRole}) => {
-    const location = useLocation();
+const RequireAuth = ({ allowedRoles }) => {
+  const location = useLocation();
 
-    return localStorage.getItem("token") ? (
-        <Outlet />
-
-    ):(
-        <Navigate to="/" state={{from: location}} reolace />
-
-    );
-};  
+  return localStorage.getItem("token") ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/" state={{ from: location }} replace />
+  );
+};
 
 export default RequireAuth;
