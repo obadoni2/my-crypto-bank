@@ -22,7 +22,6 @@ flask-mail = "*"
 requests = "*"
 flask-jwt-extended = "*"
 yagmail = "*"
-safe-pysha3 = "^1.0.4"
 
 
 
