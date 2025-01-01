@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "my-crypto-bank"
+version = "0.1.0"
+description = ""
+authors = ["Emma <emma@tech-family.ng>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+flask = {extras = ["async"], version = "^3.1.0"}
+flask-sqlalchemy = "*"
+flask-bcrypt = "*"
+flask-session = "*"
+redis = "*"
+python-dotenv = "*"
+# mysqlclient = "*"  # Comment out or remove until MySQL is properly installed
+flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
+flask-cors = "*"
+flask-mail = "*"
+# pysha3 = "*"  # Comment out or remove until build issues are resolved
+requests = "*"
+flask-jwt-extended = "*"
+yagmail = "*"
+safe-pysha3 = "^1.0.4"
+python = "^3.9"
+flask = "^2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
