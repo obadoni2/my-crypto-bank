@@ -23,8 +23,7 @@ requests = "*"
 flask-jwt-extended = "*"
 yagmail = "*"
 safe-pysha3 = "^1.0.4"
-python = "^3.9"
-flask = "^2.3"
+
 
 
 [build-system]
