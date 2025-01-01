@@ -7,8 +7,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-flask = "^3.1.0"
-flask-sqlalchemy = "^2.5.1"
+flask = "^2.2.5"  # Downgraded to resolve compatibility issues
+flask-sqlalchemy = "^2.5.1"  # Compatible with Flask 2.x, upgrade to 3.x if using Flask 3.x
 flask-bcrypt = "^1.0.1"
 flask-session = "^0.4.0"
 redis = "^5.0.0"
