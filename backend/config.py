@@ -36,8 +36,8 @@ class ApplicationConfig:
 
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
-    MAIL_USERNAME = os.environ.get("MAIL_USERNAME", "default_email@gmail.com")
-    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD", "default_password")
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME", "default_obadoniemma@gmail.com")
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD", "default_Emma11111.")
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
 
