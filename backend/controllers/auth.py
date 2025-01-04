@@ -69,12 +69,12 @@ def login_user():
     if not bcrypt.check_password_hash(user.password, password):
         return jsonify({"error": "Unauthorized"})
 
-    # Generate JWT token here
-    access_token = create_access_token(identity={"id": user.id, "role": user.role}, expires_delta=timedelta(minutes=30))
+    mail_status = send_mail(user)
 
-    return jsonify({"token": access_token, "message": "Login successful"})
-
-    
+    if mail_status:
+        return Response(status=200)
+    else:
+        return "failed to send mail"
 
 @auth.route("/logout", methods=["POST"])
 def logout_user():
