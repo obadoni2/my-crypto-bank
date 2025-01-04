@@ -83,7 +83,7 @@ if __name__ == "__main__":
     # Default to 'run' if no command is specified
     if not args.command:
         args.command = 'run'
-        args.debug = False
+        args.debug = True
         args.port = 5000
 
     # Execute the appropriate command
