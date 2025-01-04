@@ -10,7 +10,7 @@ from flask import jsonify
 from flask_jwt_extended import JWTManager
 from config import db, ma, mail, bcrypt, ApplicationConfig
 
-app = Flask(__name__)
+app = Flask(_name_)
 app.config.from_object(ApplicationConfig)
 
 app.register_blueprint(auth, url_prefix="/auth")
@@ -45,53 +45,5 @@ def create():
 
 #     return "i need token bro"
 
-def init_database():
-    """Initialize the database tables."""
-    with app.app_context():
-        db.create_all()
-        print("Database initialized successfully")
-
-def wipe_database():
-    """Drop all database tables."""
-    with app.app_context():
-        db.drop_all()
-        print("Database wiped successfully")
-
-def run_server(debug=False, port=5000):
-    """Run the Flask application server."""
-    app.run(debug=debug, port=port)
-
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description='CLI commands for managing the Flask application')
-    subparsers = parser.add_subparsers(dest='command', help='Commands')
-
-    # Run command (default)
-    run_parser = subparsers.add_parser('run', help='Run the Flask application')
-    run_parser.add_argument('--debug', action='store_true', help='Run in debug mode')
-    run_parser.add_argument('--port', type=int, default=5000, help='Port to run the server on')
-
-    # Init command
-    subparsers.add_parser('init', help='Initialize the database')
-
-    # Wipe command
-    subparsers.add_parser('wipe', help='Wipe the database')
-
-    args = parser.parse_args()
-
-    # Default to 'run' if no command is specified
-    if not args.command:
-        args.command = 'run'
-        args.debug = True
-        args.port = 5000
-
-    # Execute the appropriate command
-    if args.command == 'run':
-        run_server(args.debug, args.port)
-    elif args.command == 'init':
-        init_database()
-    elif args.command == 'wipe':
-        wipe_database()
-    else:
-        print("Invalid command. Use 'python main.py --help' for usage information.")
+if _name_ == "_main_":
+    app.run(debug=True)
