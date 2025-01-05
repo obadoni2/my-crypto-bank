@@ -2,6 +2,8 @@
 name = "my-crypto-bank"
 version = "0.1.0"
 description = ""
+
+package-mode = false
 authors = ["Emma <emma@tech-family.ng>"]
 readme = "README.md"
 
