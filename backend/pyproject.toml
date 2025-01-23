@@ -23,6 +23,7 @@ requests = "^2.31.0"
 flask-jwt-extended = "^4.4.4"
 yagmail = "^0.14.0"
 safe-pysha3 = "^1.0.4"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
