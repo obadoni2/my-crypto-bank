@@ -5,23 +5,24 @@ from controllers.auth import auth
 from controllers.crypto import crypto
 from controllers.transaction import transaction
 from controllers.account import account
-from datetime import datetime, timedelta
-from flask import jsonify
+from datetime import timedelta
 from flask_jwt_extended import JWTManager
 from config import db, ma, mail, bcrypt, ApplicationConfig
 
-app = Flask(_name_)
+# Initialize Flask app
+app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
 
+# Register blueprints
 app.register_blueprint(auth, url_prefix="/auth")
 app.register_blueprint(crypto, url_prefix="/crypto")
 app.register_blueprint(transaction, url_prefix="/transaction")
 app.register_blueprint(account, url_prefix="/account")
 
+# Enable CORS
 CORS(app, supports_credentials=True)
 
-#mail = Mail(app)#ovo obrisi u buduce
-# enabeld server side seesion sve je na serveru sem session id
+# Initialize extensions
 server_session = Session(app)
 jwt = JWTManager(app)
 db.init_app(app)
@@ -29,39 +30,33 @@ ma.init_app(app)
 bcrypt.init_app(app)
 mail.init_app(app)
 
+# Route to create database tables
 @app.route("/create")
 def create():
     db.create_all()
     return "All tables created"
 
-# @app.route("/authh")
-# def authh():
-#     access_token = create_access_token(identity="aaaaaa", expires_delta=timedelta(minutes=10))
-#     return jsonify(access_token=access_token), 200
-
-# @app.route("/reqTest")
-# @jwt_required()
-# def reqTest():
-
-#     return "i need token bro"
-
+# Function to initialize the database
 def init_database():
     """Initialize the database tables."""
     with app.app_context():
         db.create_all()
         print("Database initialized successfully")
 
+# Function to wipe the database
 def wipe_database():
     """Drop all database tables."""
     with app.app_context():
         db.drop_all()
         print("Database wiped successfully")
 
+# Function to run the Flask server
 def run_server(debug=False, port=5000):
     """Run the Flask application server."""
     app.run(debug=debug, port=port)
 
-if _name_ == "_main_":
+# CLI commands
+if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description='CLI commands for managing the Flask application')
@@ -95,3 +90,4 @@ if _name_ == "_main_":
         wipe_database()
     else:
         print("Invalid command. Use 'python main.py --help' for usage information.")
+
