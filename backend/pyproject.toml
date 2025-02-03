@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "mycryptobank"
+name = "my-crypto-bank"
 version = "0.1.0"
 description = ""
 authors = ["Emma <emma@tech-family.ng>"]
@@ -7,18 +7,16 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-flask = "^2.2.5"  # Downgraded to resolve compatibility issues
-flask-sqlalchemy = "^2.5.1"  # Compatible with Flask 2.x, upgrade to 3.x if using Flask 3.x
+flask = "^2.2.5"
+flask-sqlalchemy = "^2.5.1"
 flask-bcrypt = "^1.0.1"
 flask-session = "^0.4.0"
 redis = "^5.0.0"
 python-dotenv = "^1.0.0"
-# mysqlclient = "^2.1.1"  # Uncomment after MySQL setup
 flask-marshmallow = "^0.14.0"
 marshmallow-sqlalchemy = "^0.29.0"
 flask-cors = "^3.0.10"
 flask-mail = "^0.9.1"
-# pysha3 = "^1.0.4"  # Uncomment after build issue is resolved
 requests = "^2.31.0"
 flask-jwt-extended = "^4.4.4"
 yagmail = "^0.14.0"
@@ -27,3 +25,4 @@ safe-pysha3 = "^1.0.4"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
