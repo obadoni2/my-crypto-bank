@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "my-crypto-bank"
+name = "mycryptobank"
 version = "0.1.0"
 description = ""
 authors = ["Emma <emma@tech-family.ng>"]
