@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "my-crypto-bank"
+name = "my-crypto-bank-backend"  # No spaces, uses hyphens
 version = "0.1.0"
 description = ""
 authors = ["Emma <emma@tech-family.ng>"]
